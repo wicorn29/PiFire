@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Alarm Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: red; /* Initial background color */
+            color: white; /* Text color set to white for contrast */
+            margin: 0;
+            padding: 0;
+            display: flex; /* Flexbox to center items */
+            flex-direction: column; /* Vertical alignment */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            height: 100vh; /* Full viewport height */
+            text-align: center; /* Center text */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+        .panel {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for contrast */
+            border: 2px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 100%; /* Full width */
+            max-width: 800px; /* Maximum width for larger screens */
+            padding: 20px;
+            position: relative; /* Relative positioning for internal elements */
+        }
+        .header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .light {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-bottom: 5px; /* Space below the light */
+            background-color: gray; /* Default color for off lights */
+        }
+        .acPower {
+            background-color: green; /* AC Power light is green */
+        }
+        .trouble {
+            animation: flash 1s infinite; /* Blinking effect for Trouble light */
+        }
+        @keyframes flash {
+            0%, 100% { background-color: gray; }
+            50% { background-color: yellow; } /* Flashing from gray to yellow */
+        }
+        .fire-alarm {
+            animation: flash-red 1s infinite; /* Flashing red effect */
+        }
+        @keyframes flash-red {
+            0%, 100% { background-color: red; }
+            50% { background-color: darkorange; } /* Flashing effect for Fire Alarm light */
+        }
+        .silenced {
+            animation: blink-orange 1s infinite; /* Blinking effect for Alarm Silenced */
+        }
+        @keyframes blink-orange {
+            0%, 100% { background-color: gray; }
+            50% { background-color: orange; } /* Blinking orange */
+        }
+        h2 {
+            margin: 0 0 10px 0; /* Margin for spacing */
+            font-size: 1.5em; /* Size of the header text */
+            color: yellow; /* Color for the header text */
+        }
+        h1 {
+            margin: 20px 0; /* Margin for spacing */
+            font-size: 2.5em; /* Larger font size for the alert message */
+        }
+        .button {
+            background-color: yellow; /* Button color */
+            color: black; /* Button text color */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 20px; /* Padding for the button */
+            font-size: 1.5em; /* Font size for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Transition effect */
+        }
+        .button:hover {
+            background-color: orange; /* Change color on hover */
+        }
+        .hidden {
+            display: none; /* Class to hide elements */
+        }
+    </style>
+    <script>
+        let alarmSound = new Audio('https://github.com/wicorn29/PiFire/raw/main/server/Alarm.mp3'); // Create audio object
+
+        function silenceAlarm() {
+            const alarmSilencedLight = document.getElementById("alarmSilenced");
+            alarmSilencedLight.classList.add("silenced");
+
+            const silenceButton = document.getElementById("silenceButton");
+            silenceButton.classList.add("hidden"); // Hide the silence button
+            
+            document.body.style.backgroundColor = "orange"; // Change background to orange after button press
+            startFlashingBackground(); // Start flashing effect
+
+            alarmSound.pause(); // Pause the alarm sound
+        }
+
+        function startFlashingBackground() {
+            setInterval(() => {
+                document.body.style.backgroundColor = 
+                    document.body.style.backgroundColor === "orange" ? "yellow" : "orange"; // Flash between colors
+            }, 1000); // Change color every second
+        }
+
+        // Play the alarm sound when the page loads
+        window.onload = function() {
+            alarmSound.loop = true; // Set the audio to loop
+            alarmSound.play(); // Play the sound
+        };
+    </script>
+</head>
+<body>
+    <div class="panel">
+        <h2>PiFire by Wicorn29 (Emergency popup system)</h2> <!-- Header text -->
+        <div class="header">
+            <div>
+                <span class="light" id="supervisory"></span>
+                <div>Supervisory</div>
+            </div>
+            <div>
+                <span class="light trouble" id="trouble"></span>
+                <div>Trouble</div>
+            </div>
+            <div>
+                <span class="light acPower"></span>
+                <div>AC Power</div>
+            </div>
+            <div>
+                <span class="light silenced" id="alarmSilenced"></span>
+                <div>Alarm Silenced</div>
+            </div>
+            <div>
+                <span class="light fire-alarm"></span> <!-- Fire Alarm light -->
+                <div>Fire Alarm</div>
+            </div>
+        </div>
+        <h1>FIRE ALARM ACTIVE!</h1>
+        <button class="button" id="silenceButton" onclick="silenceAlarm()">SILENCE</button> <!-- Silence button -->
+    </div>
+</body>
+</html>
