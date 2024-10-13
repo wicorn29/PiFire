@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Alarm Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .panel {
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 100%; /* Full width */
+            max-width: 800px; /* Maximum width for larger screens */
+            margin: 0 auto; /* Center the panel */
+            padding: 20px;
+            position: fixed; /* Fixed position at the top */
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .light {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-bottom: 5px; /* Space below the light */
+            background-color: gray; /* Default color for off lights */
+            position: relative; /* To position the speech bubble */
+        }
+        .acPower {
+            background-color: green; /* AC Power light is green */
+        }
+        .trouble {
+            animation: blink 1s infinite; /* Blinking effect */
+        }
+        @keyframes blink {
+            0%, 100% { background-color: yellow; }
+            50% { background-color: orange; } /* More visible color */
+        }
+        .speech-bubble {
+            position: absolute;
+            bottom: -50px; /* Position below the text */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e0e0e0; /* Light gray background for chat bubble */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1;
+            width: 150px; /* Fixed width for the bubble */
+            text-align: center; /* Center the text inside the bubble */
+            font-size: 12px; /* Smaller font size for the bubble */
+            display: block; /* Always show */
+        }
+        h1 {
+            text-align: center;
+            margin: 0 0 20px 0; /* Margin for spacing */
+        }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <h1>Fire Alarm Control Panel</h1>
+        <div class="header">
+            <div>
+                <span class="light" id="supervisory"></span>
+                <div>Supervisory</div>
+            </div>
+            <div>
+                <span class="light trouble" id="trouble">
+                </span>
+                <div>Trouble</div>
+                <span class="speech-bubble">No equipment connected</span>
+            </div>
+            <div>
+                <span class="light light acPower" id="acPower"></span>
+                <div>AC Power</div>
+            </div>
+            <div>
+                <span class="light" id="alarmSilenced"></span>
+                <div>Alarm Silenced</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
